@@ -1,0 +1,20 @@
+databases:
+  - name: newone_db
+    databaseName: newone_db
+    user: animesh 
+
+services:
+  - type: web
+    name: newone
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn newone.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: newone_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
